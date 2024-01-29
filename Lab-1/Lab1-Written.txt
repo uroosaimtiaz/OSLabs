@@ -1,4 +1,33 @@
 1.
+When os.fork() is called, the memory space of the parent process
+is duplicated in the child process. Thus, the variable Total is
+equal to 0 in both the child and the parent process.
+
+The child process will execute the rest of the code after it is
+created until it is exited. The code that only the child process
+will run on based on the condition that pid equals 0 is:
+
+    else:  # Child process
+        Total += B(x)
+        os._exit(0)  # Ensure the child process terminates here
+
+The child process's variable Total is updated by recursive function 
+B that calculates the sum from x/2 to x. However, the changes to 
+Total are local to the child process, so after the child is exited
+the changes to Total are discarded along with the child's resources.
+
+The Total that is printed by the parent process is simply from
+updating Total with the function call A(x):
+
+    if pid != 0:  # Parent process
+        Total += A(x)
+
+Which means that Total = the sum from 0 to x/2, which is what gets
+printed. It prints 0 for n = 1 since A(x) = sum in range (0,1) = 0;
+if the child process's total was saved by the parent process then
+Total = A(1) + B(1) = 0 + 1 would output the correct amount which is
+Total = 1.
+
 2.
 3.
 4.
