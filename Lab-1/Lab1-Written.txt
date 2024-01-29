@@ -58,5 +58,15 @@ Because the exit code represents the total of the child process, which sums
 from x/2 to x, this imposes a lower upper limit for the value of x compared
 to if it were representing the sum from 0 to x/2.
 
+The actual modification is:
+   if pid != 0:  # Parent process
+        child_pid, exit_status = os.wait()
+        child_total = exit_status >> 8
+        Total += A(x)
+        Total = child_total + Total
+    else:  # Child process
+        Total += B(x)
+        os._exit(Total)  # Ensure the child process terminates here
+
 3.
 4.
