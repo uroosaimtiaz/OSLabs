@@ -41,10 +41,13 @@ def main(n = None):
         return
 
     if pid != 0:  # Parent process
+        child_pid, exit_status = os.wait()
+        child_total = exit_status >> 8
         Total += A(x)
+        Total = child_total + Total
     else:  # Child process
         Total += B(x)
-        os._exit(0)  # Ensure the child process terminates here
+        os._exit(Total)  # Ensure the child process terminates here
 
     # If this is the parent process, print the total summation
     if pid != 0:
