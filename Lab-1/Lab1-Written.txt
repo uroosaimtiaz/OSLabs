@@ -83,4 +83,5 @@ This would be:
         Total += A(x)
         os._exit(Total)  # Ensure the child process terminates here
 3.
-4.
+4. 
+When the functions of the parent and child processes are switched - with the parent process using B(x) and the child process using A(x) - the limitation due to the 8-bit status still applies, but now it applies to the sum calculated by the child process. The issue arises when the sum of numbers from 0 to (n/2) exceeds 255. The largest value of n for which the returned sum remains correct is n = 45. Starting from n = 46, the return sum is incorrect due to the 8-bit limitation of the exit status. Therefore, the value of n when the returned sum becomes incorrect is 46.
