@@ -43,29 +43,42 @@ void RoundRobinScheduler::schedule()
         processes.push(tempVector[i]);
     }
 
-    int done = 0; // Number of processes completed
     int numProcesses = processes.size(); // Total number of processes
+    queue<Process> completedProcesses; // Create a separate queue to store the completed processes
 
     // Now, we will simulate the Round Robin scheduling algorithm
-    while (done < numProcesses) {
+    while (!processes.empty()){
         Process currentProcess = processes.front();
-        processes.pop();
-        // If the process has already completed, skip it
-        if (currentProcess.remainingTime <= 0) {
-            processes.push(currentProcess);
+        if (currentProcess.arrivalTime > time) { // If the process has not arrived yet
+            // printf("Current Time: %d, No process in the queue.\n", time);
+            time++; // Increment the time by minimum 1 unit
             continue;
         }
+        else {
+            // printf("Process %d is loaded at time %d and will start executing\n", currentProcess.id, time);
+        }
+        processes.pop();
         int executionTime = min(currentProcess.remainingTime, quantum);
+        // printf("Process %d is executing at time %d for %d units\n", currentProcess.id, time, executionTime);
         time += executionTime;
         currentProcess.remainingTime -= executionTime;
-        if (currentProcess.remainingTime == 0) {
-            // Process completed
-            done++;
+        if (currentProcess.remainingTime == 0) { // Process completed
             // Wait time = Current time - Arrival time - Burst time
             currentProcess.waitTime = time - currentProcess.arrivalTime - currentProcess.burstTime;
+            // printf("Process complete. Current Time: %d, Arrival Time: %d, Burst Time: %d, Wait Time %d\n", time, currentProcess.arrivalTime, currentProcess.burstTime, currentProcess.waitTime);
             currentProcess.remainingTime = 0;
+            // Add the completed process to the completedProcesses queue
+            completedProcesses.push(currentProcess);
+        } else {
+            //printf("Process %d is not complete. Remaining Time: %d\n", currentProcess.id, currentProcess.remainingTime);
+            processes.push(currentProcess); // Push the updated process to the back of the queue
         }
-        processes.push(currentProcess); // Push the updated process to the back of the queue
+    }
+
+    // Add the completed processes back to the processes queue
+    while (!completedProcesses.empty()) {
+        processes.push(completedProcesses.front());
+        completedProcesses.pop();
     }
 }
 
