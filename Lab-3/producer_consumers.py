@@ -38,7 +38,7 @@ class SharedBuffer:
         with self.mutex:
             self.buffer.append(message)
         # TODO: signal that buffer is not empty
-        self.notEmpty.release() # will increment the semaphore value by 1 and signal that buffer is not empty
+        self.notEmpty.release() # will increment the semaphore value by 1 and signal that buffer has a new message
         # not empty contains the amount of messages in the buffer
 
     '''
@@ -55,7 +55,7 @@ class SharedBuffer:
             # TODO: if production is done and buffer is empty, return None (check the buffer length)
             if len(self.buffer) == 0:
                 # TODO: release the requried semaphore to avoid deadlock
-                self.notEmpty.release() # indicates that the only message in the buffer has been consumed
+                self.notEmpty.release() # in case more consumers need to exit
                 # Return None if production is done and buffer is empty
                 return None
 
