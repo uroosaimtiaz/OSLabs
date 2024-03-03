@@ -134,6 +134,8 @@ def main(producer_num=4, consumer_num=10, buffer_size=10, read_time=1, write_tim
     consumers = [threading.Thread(target=consumer, args=(i, read_time))
                  for i in range(consumer_num)]
 
+    start_time = time.time()  # Record start time
+
     for p in producers:
         p.start()
 
@@ -146,8 +148,11 @@ def main(producer_num=4, consumer_num=10, buffer_size=10, read_time=1, write_tim
     for c in consumers:
         c.join()
 
-    print("All producers and consumers have finished.")
+    end_time = time.time()  # Record end time
 
+
+    print("All producers and consumers have finished.")
+    print(f"Total execution time: {format(end_time - start_time, '.2f')} seconds")
 
 if __name__ == '__main__':
     main()
