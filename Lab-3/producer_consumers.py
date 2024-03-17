@@ -124,7 +124,7 @@ def consumer(thread_id, read_time=1):
         time.sleep(read_time)  # Simulate reading time
 
 
-def main(producer_num=4, consumer_num=10, buffer_size=10, read_time=1, write_time=2):
+def main(producer_num=5, consumer_num=10, buffer_size=1, read_time=2, write_time=3):
     global buffer
     # Initialize shared buffer
     buffer = SharedBuffer(buffer_size, producer_num, consumer_num)
