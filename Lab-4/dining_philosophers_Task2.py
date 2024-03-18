@@ -2,6 +2,9 @@ import threading
 import time
 import random
 
+
+
+
 # Define the number of philosophers / forks
 PHILOSOPHERS_COUNT = 5
 thinking_time = 1
@@ -14,8 +17,7 @@ mutex = threading.Semaphore(1)
 
 
 def philosopher(id):
-
-    while True:
+        # while true:
         # Think
         print(f"Philosopher {id} is thinking.")
         # Simulate thinking time
